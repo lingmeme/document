@@ -8,9 +8,9 @@ bgImageDark: https://theme-hope-assets.vuejs.press/bg/6-dark.svg
 bgImageStyle:
   background-attachment: fixed
 heroText: Project name
-tagline: 记录
+tagline: 记录、笔记
 actions:
-  - text: How to Use
+  - text: 项目操作手册
     icon: lightbulb
     link: ./demo/
     type: primary
@@ -19,14 +19,6 @@ actions:
     link: ./guide/
 
 highlights:
-  - header: Easy to install
-    image: /assets/image/box.svg
-    bgImage: https://theme-hope-assets.vuejs.press/bg/3-light.svg
-    bgImageDark: https://theme-hope-assets.vuejs.press/bg/3-dark.svg
-    highlights:
-      - title: Run <code>pnpm create vuepress-theme-hope hope-project</code> to create a new project with this theme.
-      - title: Run <code>pnpm create vuepress-theme-hope add .</code> in your project root to create a new project with this theme.
-
   - header: Add things you want in markdown
     description: We extended the standard commonMark specification and added tons of new features for you.
     image: /assets/image/markdown.svg
