@@ -5,32 +5,26 @@ import { enSidebar, zhSidebar } from "./sidebar/index.js";
 
 export default hopeTheme({
   hostname: "https://vuepress-theme-hope-docs-demo.netlify.app",
-
   author: {
     name: "Mr.Hope",
     url: "https://mister-hope.com",
   },
-
   iconAssets: "fontawesome-with-brands",
-
   logo: "https://theme-hope-assets.vuejs.press/logo.svg",
+  //repo: "vuepress-theme-hope/vuepress-theme-hope",
+  repo: "ling0900/",
 
-  repo: "vuepress-theme-hope/vuepress-theme-hope",
-
+  // 这里是文档的根路径
   docsDir: "src",
 
   locales: {
     "/": {
       // navbar
       navbar: enNavbar,
-
       // sidebar
       sidebar: enSidebar,
-
       footer: "Default footer",
-
       displayFooter: true,
-
       metaLocales: {
         editLink: "Edit this page on GitHub",
       },
@@ -42,14 +36,10 @@ export default hopeTheme({
     "/zh/": {
       // navbar
       navbar: zhNavbar,
-
       // sidebar
       sidebar: zhSidebar,
-
       footer: "默认页脚",
-
       displayFooter: true,
-
       // page meta
       metaLocales: {
         editLink: "在 GitHub 上编辑此页",
