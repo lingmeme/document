@@ -6,7 +6,7 @@ import { enSidebar, zhSidebar } from "./sidebar/index.js";
 export default hopeTheme({
   hostname: "https://vuepress-theme-hope-docs-demo.netlify.app",
   author: {
-    name: "Mr.Hope",
+    name: "Ling",
     url: "https://mister-hope.com",
   },
   iconAssets: "fontawesome-with-brands",

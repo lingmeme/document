@@ -4,11 +4,19 @@ export const enSidebar = sidebar({
   "/": [
     "",
     {
-      text: "Docs",
+      text: "Java基础",
       icon: "book",
-      prefix: "guide/",
+      prefix: "java/",
       children: "structure",
     },
+
+    // 下面的暂时注释掉。
+    // {
+    //   text: "Docs",
+    //   icon: "book",
+    //   prefix: "guide/",
+    //   children: "structure",
+    // },
     // {
     //   text: "Slides",
     //   icon: "person-chalkboard",

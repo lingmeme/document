@@ -5,22 +5,35 @@ import { navbar } from "vuepress-theme-hope";
 export const enNavbar = navbar([
   "/",
   {
-    text: "Guide",
+    text: "Java基础",
     icon: "lightbulb",
-    prefix: "/guide/",
+    prefix: "/java/",
     children: [
       {
-        text: "Bar",
+        text: "Java并发编程",
         icon: "lightbulb",
-        prefix: "bar/",
-        children: ["baz", { text: "...", icon: "ellipsis", link: "#" }],
-      },
-      {
-        text: "Foo",
-        icon: "lightbulb",
-        prefix: "foo/",
-        children: ["ray", { text: "...", icon: "ellipsis", link: "#" }],
+        prefix: "java并发/",
+        children: ["", { text: "...", icon: "ellipsis", link: "#" }],
       },
     ],
   },
+  // {
+  //   text: "Guide",
+  //   icon: "lightbulb",
+  //   prefix: "/guide/",
+  //   children: [
+  //     {
+  //       text: "Bar",
+  //       icon: "lightbulb",
+  //       prefix: "bar/",
+  //       children: ["baz", { text: "...", icon: "ellipsis", link: "#" }],
+  //     },
+  //     {
+  //       text: "Foo",
+  //       icon: "lightbulb",
+  //       prefix: "foo/",
+  //       children: ["ray", { text: "...", icon: "ellipsis", link: "#" }],
+  //     },
+  //   ],
+  // },
 ]);
