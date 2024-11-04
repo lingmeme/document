@@ -10,7 +10,8 @@ export default hopeTheme({
     url: "https://mister-hope.com",
   },
   iconAssets: "fontawesome-with-brands",
-  logo: "https://theme-hope-assets.vuejs.press/logo.svg",
+  //logo
+  //logo: "https://theme-hope-assets.vuejs.press/logo.svg",
   //repo: "vuepress-theme-hope/vuepress-theme-hope",
   repo: "ling0900/",
 
