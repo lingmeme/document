@@ -17,6 +17,11 @@ export const enNavbar = navbar([
       },
     ],
   },
+  {
+    text: "My Plan",
+    icon: "lightbulb",
+    link: "/plan/",
+  },
   // {
   //   text: "Guide",
   //   icon: "lightbulb",
