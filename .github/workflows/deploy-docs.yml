@@ -46,3 +46,9 @@ jobs:
           # Deploy Docs
           branch: gh-pages
           folder: src/.vuepress/dist
+          # Personal Access Token 下面讲
+          personal_token: ${{ secrets.PUBLISH_BLOG }}
+          # 指定push的仓库  
+          external_repository: <username>/public_repo
+          # 指定push的分支
+          publish_branch: main
