@@ -1,5 +1,5 @@
 ---
-title: juc工具类
+title: JUC工具类
 icon: circle-info
 ---
 

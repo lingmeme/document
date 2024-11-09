@@ -8,6 +8,7 @@ export const enSidebar = sidebar({
       icon: "book",
       prefix: "java/",
       children: "structure",
+      collapsible: true,
     },
 
     // 下面的暂时注释掉。
