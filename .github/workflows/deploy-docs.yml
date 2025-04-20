@@ -1,79 +1,49 @@
-name: Deploy Docs
+name: docs
 
 on:
+  # 每当 push 到 main 分支时触发部署
   push:
-    branches:
-      - main  # 根据您的默认分支名称调整
-
-permissions:
-  contents: write
+    branches: [main]
+  # 手动触发部署
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  docs:
     runs-on: ubuntu-latest
-    steps:
-      # 步骤 1：检出代码
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      # 步骤 2：设置 Node.js 环境并缓存 npm 缓存
-      - name: Set up Node.js
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+
+      - name: 设置 pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 设置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 推荐使用 LTS 版本
-          cache: 'npm'
+          # 选择要使用的 node 版本
+          node-version: 22
+          # 缓存 pnpm 依赖
+          cache: pnpm
 
-      # 步骤 3：移除现有的 node_modules 和锁定文件
-      - name: Remove existing node_modules and lock files
-        run: |
-          rm -rf node_modules package-lock.json yarn.lock
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
 
-      # 步骤 4：确保 package-lock.json 存在，如果不存在则安装依赖以生成
-      - name: Ensure package-lock.json exists
-        run: |
-          if [ ! -f package-lock.json ]; then
-            echo "package-lock.json not found. Installing dependencies to generate it."
-            npm install
-          fi
+      # 运行构建脚本
+      - name: 构建 VuePress 站点
+        run: pnpm docs:build
 
-      # 步骤 5：清理 npm 缓存并重新安装依赖
-      - name: Clean npm cache and install dependencies
-        run: |
-          npm cache clean --force
-          npm ci
-
-      # 步骤 6：设置 Ruby 环境并安装 faraday-retry gem
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      # 查看 workflow 的文档来获取更多信息
+      # @see https://github.com/crazy-max/ghaction-github-pages
+      - name: 部署到 GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v4
         with:
-          ruby-version: '3.1'
-
-      - name: Install faraday-retry gem
-        run: gem install faraday-retry
-
-      # 步骤 7：构建 VuePress 文档
-      - name: Build Docs with VuePress
+          # 部署到 gh-pages 分支
+          target_branch: gh-pages
+          # 部署目录为 VuePress 的默认输出目录
+          build_dir: src/.vuepress/dist
         env:
-          NODE_OPTIONS: --max_old_space_size=8192
-        run: npm run docs:build
-
-      # 步骤 7：检查 dist 目录是否存在
-      - name: Check dist directory
-        run: |
-          if [ ! -d "src/.vuepress/dist" ]; then
-            echo "Dist directory does not exist. Build might have failed."
-            exit 1
-          else
-            echo "Dist directory exists. Proceeding to deploy."
-          fi
-
-      # 步骤 8：添加 .nojekyll 文件以防止 Jekyll 处理
-      - name: Add .nojekyll file
-        run: touch src/.vuepress/dist/.nojekyll
-
-      # 步骤 9：部署到 GitHub Pages
-      - name: Deploy Docs to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: src/.vuepress/dist
+          # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
