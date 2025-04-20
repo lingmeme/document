@@ -1,9 +1,9 @@
-name: Deploy VuePress Docs to GitHub Pages
+name: Deploy Docs
 
 on:
   push:
     branches:
-      - main
+      - main  # 根据您的默认分支名称调整
 
 permissions:
   contents: write
@@ -43,18 +43,28 @@ jobs:
           npm ci
 
       # 步骤 6：构建 VuePress 文档
-      - name: Build Docs
+      - name: Build Docs with VuePress
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: npm run docs:build
 
-     # 步骤 7：添加 .nojekyll 文件
-      - name: Add .nojekyll file
-        run: touch ./docs/dist/.nojekyll
+      # 步骤 7：检查 dist 目录是否存在
+      - name: Check dist directory
+        run: |
+          if [ ! -d "docs/dist" ]; then
+            echo "Dist directory does not exist. Build might have failed."
+            exit 1
+          else
+            echo "Dist directory exists. Proceeding to deploy."
+          fi
 
-      # 步骤 8：部署到 GitHub Pages
+      # 步骤 8：添加 .nojekyll 文件以防止 Jekyll 处理
+      - name: Add .nojekyll file
+        run: touch docs/dist/.nojekyll
+
+      # 步骤 9：部署到 GitHub Pages
       - name: Deploy Docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./src/.vuepress/dist # 根据实际构建路径调整
+          publish_dir: src/.vuepress/dist
