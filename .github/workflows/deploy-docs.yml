@@ -47,6 +47,4 @@ jobs:
           branch: gh-pages
           folder: src/.vuepress/dist
            # Personal Access Token 下面讲
-        env:
-          # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
