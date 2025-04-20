@@ -1,4 +1,4 @@
-name: Deploy Docs
+name: Deploy VuePress Docs to GitHub Pages
 
 on:
   push:
@@ -42,19 +42,15 @@ jobs:
           npm cache clean --force
           npm ci
 
-      # 步骤 6：安装 VuePress（如果需要）
-      - name: Install VuePress globally (optional)
-        run: npm install -g vuepress@next
-
-      # 步骤 7：构建 VuePress 文档
+      # 步骤 6：构建 VuePress 文档
       - name: Build Docs
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: npm run docs:build
 
-      # 步骤 8：部署到 GitHub Pages
-      - name: Deploy Docs to gh-pages
+      # 步骤 7：部署到 GitHub Pages
+      - name: Deploy Docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./src/.vuepress/dist
+          publish_dir: ./src/.vuepress/dist # 根据实际构建路径调整
