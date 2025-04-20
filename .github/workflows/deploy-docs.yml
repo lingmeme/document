@@ -42,7 +42,16 @@ jobs:
           npm cache clean --force
           npm ci
 
-      # 步骤 6：构建 VuePress 文档
+      # 步骤 6：设置 Ruby 环境并安装 faraday-retry gem
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+
+      - name: Install faraday-retry gem
+        run: gem install faraday-retry
+
+      # 步骤 7：构建 VuePress 文档
       - name: Build Docs with VuePress
         env:
           NODE_OPTIONS: --max_old_space_size=8192
@@ -59,8 +68,8 @@ jobs:
           fi
 
       # 步骤 8：添加 .nojekyll 文件以防止 Jekyll 处理
-      #- name: Add .nojekyll file
-      #  run: touch src/.vuepress/dist/.nojekyll
+      - name: Add .nojekyll file
+        run: touch src/.vuepress/dist/.nojekyll
 
       # 步骤 9：部署到 GitHub Pages
       - name: Deploy Docs to GitHub Pages
