@@ -59,8 +59,8 @@ jobs:
           fi
 
       # 步骤 8：添加 .nojekyll 文件以防止 Jekyll 处理
-      - name: Add .nojekyll file
-        run: touch src/.vuepress/dist/.nojekyll
+      #- name: Add .nojekyll file
+      #  run: touch src/.vuepress/dist/.nojekyll
 
       # 步骤 9：部署到 GitHub Pages
       - name: Deploy Docs to GitHub Pages
