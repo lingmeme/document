@@ -48,7 +48,11 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=8192
         run: npm run docs:build
 
-      # 步骤 7：部署到 GitHub Pages
+     # 步骤 7：添加 .nojekyll 文件
+      - name: Add .nojekyll file
+        run: touch ./docs/dist/.nojekyll
+
+      # 步骤 8：部署到 GitHub Pages
       - name: Deploy Docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
