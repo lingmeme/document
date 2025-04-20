@@ -51,7 +51,7 @@ jobs:
       # 步骤 7：检查 dist 目录是否存在
       - name: Check dist directory
         run: |
-          if [ ! -d "docs/dist" ]; then
+          if [ ! -d "src/.vuepress/dist" ]; then
             echo "Dist directory does not exist. Build might have failed."
             exit 1
           else
@@ -60,7 +60,7 @@ jobs:
 
       # 步骤 8：添加 .nojekyll 文件以防止 Jekyll 处理
       - name: Add .nojekyll file
-        run: touch docs/dist/.nojekyll
+        run: touch src/.vuepress/dist/.nojekyll
 
       # 步骤 9：部署到 GitHub Pages
       - name: Deploy Docs to GitHub Pages
