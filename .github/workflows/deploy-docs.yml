@@ -1,4 +1,3 @@
-
 name: Deploy Docs
 
 on:
@@ -13,31 +12,51 @@ jobs:
   deploy-gh-pages:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # if your docs needs submodules, uncomment the following line
+          # 如果需要子模块，取消注释并设置为 true
           # submodules: true
-      - name: Setup Node.js
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: '18' # 推荐使用 LTS 版本
+          cache: 'npm'
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential
+
       - name: Remove existing node_modules and lock files
         run: |
           rm -rf node_modules package-lock.json yarn.lock
+
+      - name: Ensure package-lock.json exists
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "package-lock.json not found. Installing dependencies to generate it."
+            npm install
+          fi
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Additional Dependency Installation (if needed)
+        run: npm install rollup --save-dev # 根据需要安装其他依赖
+
       - name: Build Docs
         env:
           NODE_OPTIONS: --max_old_space_size=8192
-        run: |-
+        run: |
           npm run docs:build
-          > src/.vuepress/dist/.nojekyll
+          touch src/.vuepress/dist/.nojekyll # 创建 .nojekyll 文件
+
       - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # Deploy Docs
           branch: gh-pages
           folder: src/.vuepress/dist
