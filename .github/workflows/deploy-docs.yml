@@ -9,29 +9,26 @@ permissions:
   contents: write
 
 jobs:
-  deploy-gh-pages:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # 步骤 1：检出代码
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          # 如果需要子模块，取消注释并设置为 true
-          # submodules: true
 
+      # 步骤 2：设置 Node.js 环境并缓存 npm 缓存
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18' # 推荐使用 LTS 版本
           cache: 'npm'
 
-      - name: Install build dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential
-
+      # 步骤 3：移除现有的 node_modules 和锁定文件
       - name: Remove existing node_modules and lock files
         run: |
           rm -rf node_modules package-lock.json yarn.lock
 
+      # 步骤 4：确保 package-lock.json 存在，如果不存在则安装依赖以生成
       - name: Ensure package-lock.json exists
         run: |
           if [ ! -f package-lock.json ]; then
@@ -39,24 +36,25 @@ jobs:
             npm install
           fi
 
-      - name: Clear npm cache
-        run: npm cache clean --force
+      # 步骤 5：清理 npm 缓存并重新安装依赖
+      - name: Clean npm cache and install dependencies
+        run: |
+          npm cache clean --force
+          npm ci
 
-      - name: Install dependencies
-        run: npm ci
+      # 步骤 6：安装 VuePress（如果需要）
+      - name: Install VuePress globally (optional)
+        run: npm install -g vuepress@next
 
-      - name: Additional Dependency Installation (if needed)
-        run: npm install rollup --save-dev # 根据需要安装其他依赖
-
+      # 步骤 7：构建 VuePress 文档
       - name: Build Docs
         env:
           NODE_OPTIONS: --max_old_space_size=8192
-        run: |
-          npm run docs:build
-          touch src/.vuepress/dist/.nojekyll # 创建 .nojekyll 文件
+        run: npm run docs:build
 
-      - name: Deploy Docs
-        uses: JamesIves/github-pages-deploy-action@v4
+      # 步骤 8：部署到 GitHub Pages
+      - name: Deploy Docs to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          folder: src/.vuepress/dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./src/.vuepress/dist
